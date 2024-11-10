@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PythonHub Forums - Discuss and Learn Together</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding-top: 76px;
+        }
+
+        /* Navbar Styles - Keeping consistent with landing page */
+        .navbar {
+            background-color: #2b5b84 !important;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            color: #ffd700;
+            font-size: 2rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffd700 !important;
+        }
+
+        .nav-link.active {
+            color: #ffd700 !important;
+        }
+
+        .search-form .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .search-button {
+            background-color: #ffd700 !important;
+            border-color: #ffd700 !important;
+            color: #0f2941 !important;
+            font-weight: 600;
+        }
+
+        /* Forum Specific Styles */
+        .forum-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .forum-header {
+            background: linear-gradient(135deg, #2b5b84 0%, #1a365d 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .forum-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .create-post-btn {
+            background-color: #ffd700;
+            color: #2b5b84;
+            font-weight: bold;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .create-post-btn:hover {
+            transform: scale(1.05);
+            background-color: #ffed4a;
+            color: #2b5b84;
+        }
+
+        .forum-category {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .forum-category:hover {
+            transform: translateY(-3px);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            color: #2b5b84;
+            margin-right: 1rem;
+        }
+
+        .category-stats {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .recent-posts {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .post-item {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #2b5b84;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .badge-custom {
+            background-color: #2b5b84;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .forum-header h1 {
+                font-size: 2rem;
+            }
+
+            .category-icon {
+                font-size: 1.5rem;
+            }
+
+            .forum-category {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (keeping consistent with landing page) -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fab fa-python"></i>
+                PythonHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'practice' %}">Practice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog' %}">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'forum' %}">Forum</a>
+                    </li>
+                </ul>
+                <div class="d-flex search-form gap">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'logout'%}" class="btn search-button" >Logout</a> 
+                    {% else %}
+                    <a href="{% url 'login'%}" class="btn search-button" >Login</a> 
+                    <a href="{% url 'signup'%}" class="btn search-button" >Signup</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Forum Content -->
+    <div class="forum-container">
+        <!-- Forum Header -->
+        <div class="forum-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1>Python Community Forum</h1>
+                    <p>Join the discussion with fellow Python enthusiasts</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="create-post-btn">
+                        <i class="fas fa-plus-circle me-2"></i>Create New Post
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forum Categories -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Beginner Questions -->
+                <div class="forum-category">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-graduation-cap category-icon"></i>
+                        <div class="flex-grow-1">
+                            <h3>Beginner Questions</h3>
+                            <p class="mb-0">New to Python? Ask your questions here!</p>
+                            <div class="category-stats">
+                                <i class="fas fa-comments me-2"></i>245 topics
+                                <i class="fas fa-users ms-3 me-2"></i>1.2k members
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Python -->
+                <div class="forum-category">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-code category-icon"></i>
+                        <div class="flex-grow-1">
+                            <h3>Advanced Python</h3>
+                            <p class="mb-0">Discuss advanced concepts, optimization, and best practices</p>
+                            <div class="category-stats">
+                                <i class="fas fa-comments me-2"></i>178 topics
+                                <i class="fas fa-users ms-3 me-2"></i>856 members
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Showcase -->
+                <div class="forum-category">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-project-diagram category-icon"></i>
+                        <div class="flex-grow-1">
+                            <h3>Project Showcase</h3>
+                            <p class="mb-0">Share and discuss your Python projects</p>
+                            <div class="category-stats">
+                                <i class="fas fa-comments me-2"></i>156 topics
+                                <i class="fas fa-users ms-3 me-2"></i>945 members
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career Discussion -->
+                <div class="forum-category">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-briefcase category-icon"></i>
+                        <div class="flex-grow-1">
+                            <h3>Career Discussion</h3>
+                            <p class="mb-0">Career advice, job opportunities, and industry insights</p>
+                            <div class="category-stats">
+                                <i class="fas fa-comments me-2"></i>134 topics
+                                <i class="fas fa-users ms-3 me-2"></i>723 members
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Posts Sidebar -->
+            <div class="col-lg-4">
+                <div class="recent-posts">
+                    <h3 class="mb-4">Recent Discussions</h3>
+                    
+                    <!-- Recent Post Items -->
+                    <div class="post-item">
+                        <div class="d-flex">
+                            <div class="avatar me-3">JD</div>
+                            <div>
+                                <h5 class="mb-1">Help with List Comprehension</h5>
+                                <div class="post-meta">
+                                    <span class="me-3"><i class="far fa-user me-1"></i>John Doe</span>
+                                    <span><i class="far fa-clock me-1"></i>2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-item">
+                        <div class="d-flex">
+                            <div class="avatar me-3">AS</div>
+                            <div>
+                                <h5 class="mb-1">Django REST Framework Tips</h5>
+                                <div class="post-meta">
+                                    <span class="me-3"><i class="far fa-user me-1"></i>Alice Smith</span>
+                                    <span><i class="far fa-clock me-1"></i>4 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-item">
+                        <div class="d-flex">
+                            <div class="avatar me-3">RJ</div>
+                            <div>
+                                <h5 class="mb-1">Async/Await Best Practices</h5>
+                                <div class="post-meta">
+                                    <span class="me-3"><i class="far fa-user me-1"></i>Robert Johnson</span>
+                                    <span><i class="far fa-clock me-1"></i>6 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add hover animation to forum categories
+        document.querySelectorAll('.forum-category').forEach(category => {
+            category.addEventListener('mouseenter', () => {
+                category.style.transform = 'translateY(-3px)';
+            });
+            category.addEventListener('mouseleave', () => {
+                category.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
