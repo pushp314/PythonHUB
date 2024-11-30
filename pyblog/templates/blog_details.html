@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PythonHub - Blog</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    padding-top: 76px;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #2b5b84 !important;
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    color: white !important;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.navbar-brand i {
+    margin-right: 10px;
+    color: #ffd700;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #ffd700 !important;
+}
+
+/* Blog-specific styles */
+.blog-header {
+    background: linear-gradient(135deg, #2b5b84 0%, #1a365d 100%);
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.blog-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: sticky;
+    top: 100px;
+}
+
+.sidebar-widget {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.widget-title {
+    color: #2b5b84;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ffd700;
+}
+
+.category-list, .tag-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-list li, .tag-list li {
+    margin-bottom: 0.5rem;
+}
+
+.category-list a, .tag-list a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.category-list a:hover, .tag-list a:hover {
+    color: #2b5b84;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: #f0f0f0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.tag:hover {
+    background: #ffd700;
+}
+
+/* Search widget */
+.search-widget input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.search-widget button {
+    width: 100%;
+    padding: 0.8rem;
+    background: #ffd700;
+    border: none;
+    border-radius: 5px;
+    color: #2b5b84;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-widget button:hover {
+    background: #ffed4a;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-header h1 {
+        font-size: 2rem;
+    }
+
+    .blog-container {
+        padding: 0 1rem;
+    }
+}
+.container {
+    margin: 0 auto;
+}
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.pt-5 {
+    padding-top: 3rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #666;
+}
+
+/* Post Header */
+.post-header .post-meta {
+    display: flex;
+    gap: 1rem;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.post-header .post-meta i {
+    margin-right: 0.25rem;
+}
+
+/* Featured Image */
+.post-featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+/* Table of Contents */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.toc-list {
+    padding-left: 1.25rem;
+    list-style-type: decimal;
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.toc-list a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.toc-list a:hover {
+    text-decoration: underline;
+}
+
+/* Post Content */
+.post-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.post-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    color: #555;
+}
+
+.post-content p,
+.post-content ul,
+.post-content pre {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+.post-content ul {
+    padding-left: 1.25rem;
+    list-style-type: disc;
+}
+
+.post-content pre {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.alert-info {
+    background-color: #e9f6fb;
+    color: #0c5460;
+    border: 1px solid #b8daff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Author Bio */
+.author-bio {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+}
+
+.author-bio .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.author-bio .card-text {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.social-links a {
+    color: #555;
+    font-size: 1.25rem;
+}
+
+.social-links a:hover {
+    color: #007bff;
+}
+
+/* Tags */
+.post-tags {
+    margin-top: 1rem;
+}
+
+.post-tags .badge {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.75rem;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+.post-tags .badge:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+/* Comments Section */
+.comments-section {
+    margin-top: 3rem;
+}
+
+.comments-section h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.comments-section .card {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+}
+
+.comments-section .form-control {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+}
+
+.comments-section .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+}
+
+.comments-section .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navbar (Same as landing page) -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fab fa-python"></i>
+                PythonHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'practice' %}">Practice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'blog' %}">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'forum' %}">Forum</a>
+                    </li>
+                </ul>
+                <div class="d-flex search-form gap">
+                    <!-- {% if user.is_authenticated %} -->
+                    <a href="{% url 'logout' %}" class="btn search-button">Logout</a> 
+                    <!-- {% else %} -->
+                    <a href="{% url 'login' %}" class="btn search-button">Login</a> 
+                    <a href="{% url 'signup' %}" class="btn search-button">Signup</a>
+                    <!-- {% endif %} -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Header -->
+    <header class="blog-header">
+        <h1>Python Programming Blog</h1>
+        <p>Stay updated with the latest Python tutorials, tips, and best practices</p>
+    </header>
+
+    <!-- Single Blog Post Content -->
+    <div class="container mt-5 pt-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <article class="blog-post-full">
+                    <!-- Post Header -->
+                    <header class="post-header mb-4">
+                        <h1 class="display-4 mb-3">Introduction to Pandas for Data Analysis</h1>
+                        <div class="post-meta">
+                            <span class="post-date"><i class="far fa-calendar"></i> March 14, 2024</span>
+                            <span class="post-author"><i class="far fa-user"></i> Sarah Johnson</span>
+                            <span class="post-category"><i class="far fa-folder"></i> Data Science</span>
+                            <span class="post-read-time"><i class="far fa-clock"></i> 15 min read</span>
+                        </div>
+                    </header>
+
+                    <!-- Featured Image -->
+                    <div class="post-featured-image mb-4">
+                        <img src="/api/placeholder/800/400" class="img-fluid rounded" alt="Pandas Data Analysis">
+                    </div>
+
+                    <!-- Table of Contents -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Table of Contents</h5>
+                            <ol class="toc-list">
+                                <li><a href="#introduction">Introduction to Pandas</a></li>
+                                <li><a href="#installation">Installation and Setup</a></li>
+                                <li><a href="#data-structures">Core Data Structures</a></li>
+                                <li><a href="#basic-operations">Basic Operations</a></li>
+                                <li><a href="#data-analysis">Data Analysis Examples</a></li>
+                                <li><a href="#conclusion">Conclusion</a></li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Post Content -->
+                    <div class="post-content">
+                        <!-- Add your sections here -->
+                        <section id="introduction">
+                            <h2>Introduction to Pandas</h2>
+                            <p class="lead">Pandas is a powerful Python library for data manipulation and analysis. It provides high-performance, easy-to-use data structures and tools for working with structured data.</p>
+                            
+                            <p>Whether you're a data scientist, analyst, or developer, Pandas is an essential tool for:</p>
+                            <ul>
+                                <li>Data cleaning and preparation</li>
+                                <li>Data analysis and exploration</li>
+                                <li>Time series analysis</li>
+                                <li>Statistical operations</li>
+                                <li>Data visualization</li>
+                            </ul>
+                        </section>
+
+                        <section id="installation">
+                            <h2>Installation and Setup</h2>
+                            <p>Installing Pandas is straightforward using pip:</p>
+                            <pre><code class="language-bash">pip install pandas</code></pre>
+
+                            <p>To get started, import Pandas in your Python script:</p>
+                            <pre><code class="language-python">import pandas as pd
+import numpy as np  # Often used alongside Pandas</code></pre>
+                        </section>
+
+                        <section id="data-structures">
+                            <h2>Core Data Structures</h2>
+                            <h3>Series</h3>
+                            <p>A Series is a one-dimensional labeled array that can hold data of any type:</p>
+                            <pre><code class="language-python"># Creating a Series
+s = pd.Series([1, 3, 5, np.nan, 6, 8])
+print(s)
+
+# Output:
+# 0    1.0
+# 1    3.0
+# 2    5.0
+# 3    NaN
+# 4    6.0
+# 5    8.0
+# dtype: float64</code></pre>
+
+                            <h3>DataFrame</h3>
+                            <p>A DataFrame is a 2-dimensional labeled data structure with columns of potentially different types:</p>
+                            <pre><code class="language-python"># Creating a DataFrame
+df = pd.DataFrame({
+    'Name': ['John', 'Anna', 'Peter'],
+    'Age': [28, 22, 35],
+    'City': ['New York', 'Paris', 'London']
+})
+print(df)
+
+# Output:
+#     Name  Age      City
+# 0   John   28  New York
+# 1   Anna   22     Paris
+# 2  Peter   35    London</code></pre>
+                        </section>
+
+                        <section id="basic-operations">
+                            <h2>Basic Operations</h2>
+                            <h3>Reading Data</h3>
+                            <p>Pandas can read data from various file formats:</p>
+                            <pre><code class="language-python"># Reading CSV
+df = pd.read_csv('data.csv')
+
+# Reading Excel
+df = pd.read_excel('data.xlsx')
+
+# Reading JSON
+df = pd.read_json('data.json')</code></pre>
+
+                            <h3>Data Selection</h3>
+                            <p>Accessing data in a DataFrame:</p>
+                            <pre><code class="language-python"># Select a single column
+names = df['Name']
+
+# Select multiple columns
+subset = df[['Name', 'Age']]
+
+# Filter rows
+adults = df[df['Age'] >= 18]
+
+# Select by position
+first_row = df.iloc[0]
+
+# Select by label
+row_by_name = df.loc[0, 'Name']</code></pre>
+                        </section>
+
+                        <section id="data-analysis">
+                            <h2>Data Analysis Examples</h2>
+                            <p>Let's look at some common data analysis operations:</p>
+
+                            <h3>Basic Statistics</h3>
+                            <pre><code class="language-python"># Summary statistics
+print(df.describe())
+
+# Mean age
+print(df['Age'].mean())
+
+# Count by city
+print(df['City'].value_counts())</code></pre>
+
+                            <h3>Data Grouping</h3>
+                            <pre><code class="language-python"># Group by city and calculate mean age
+city_stats = df.groupby('City')['Age'].mean()
+print(city_stats)</code></pre>
+
+                            <div class="alert alert-info">
+                                <h4>Pro Tip</h4>
+                                <p>When working with large datasets, use the <code>df.info()</code> method to get a quick overview of your data, including memory usage and data types.</p>
+                            </div>
+                        </section>
+
+                        <section id="conclusion">
+                            <h2>Conclusion</h2>
+                            <p>This introduction covers the basics of Pandas, but there's much more to explore. Some next steps include:</p>
+                            <ul>
+                                <li>Learning about data cleaning and preprocessing</li>
+                                <li>Exploring more advanced grouping operations</li>
+                                <li>Understanding merge and join operations</li>
+                                <li>Working with time series data</li>
+                                <li>Creating visualizations with Pandas</li>
+                            </ul>
+                        </section>
+
+                    </div>
+
+                    <!-- Author Bio -->
+                    <div class="author-bio card mt-5">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <img src="/api/placeholder/100/100" class="rounded-circle" alt="Author">
+                                </div>
+                                <div class="col">
+                                    <h5 class="card-title">Sarah Johnson</h5>
+                                    <p class="card-text">Sarah is a Data Scientist with over 8 years of experience in Python and data analysis. She loves teaching and making complex concepts accessible to everyone.</p>
+                                    <div class="social-links">
+                                        <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
+                                        <a href="#" class="me-2"><i class="fab fa-linkedin"></i></a>
+                                        <a href="#"><i class="fab fa-github"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post Tags -->
+                    <div class="post-tags mt-4">
+                        <span class="me-2">Tags:</span>
+                        <a href="#" class="badge bg-primary me-1">Python</a>
+                        <a href="#" class="badge bg-primary me-1">Pandas</a>
+                        <a href="#" class="badge bg-primary me-1">Data Analysis</a>
+                        <a href="#" class="badge bg-primary me-1">Data Science</a>
+                    </div>
+ 
+                    <!-- Comments Section -->
+                    <section class="comments-section mt-5">
+                        <h3>Comments</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Add comment form -->
+                                <form class="mb-4">
+                                    <div class="mb-3">
+                                        <textarea class="form-control" rows="3" placeholder="Leave a comment..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar col-lg-4">
+                <!-- Add sidebar widgets here -->
+                            <!-- Sidebar -->
+                <div class="sidebar">
+                <!-- Search Widget -->
+                    <div class="sidebar-widget search-widget">
+                        <h3 class="widget-title">Search</h3>
+                        <form>
+                            <input type="text" placeholder="Search articles...">
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Categories</h3>
+                        <ul class="category-list">
+                            <li><a href="#">Python Basics (15)</a></li>
+                            <li><a href="#">Data Science (23)</a></li>
+                            <li><a href="#">Web Development (18)</a></li>
+                            <li><a href="#">Machine Learning (12)</a></li>
+                            <li><a href="#">Tips & Tricks (9)</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Tags Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tag-list">
+                            <a href="#" class="tag">Python</a>
+                            <a href="#" class="tag">Django</a>
+                            <a href="#" class="tag">Data Science</a>
+                            <a href="#" class="tag">ML</a>
+                            <a href="#" class="tag">Web Dev</a>
+                            <a href="#" class="tag">Tutorial</a>
+                            <a href="#" class="tag">API</a>
+                            <a href="#" class="tag">Tips</a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script> -->
+</body>
+</html>
