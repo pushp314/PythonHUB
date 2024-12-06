@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- category_posts.html -->
+    <h1>{{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+
+    <h2>Posts in this Category</h2>
+    {% for post in posts %}
+        <div class="post">
+            <a href="{% url 'forum:post_detail' post.id %}" class="list-group-item list-group-item-action">
+                <h5>{{ post.title }}</h5>
+                <p>{{ post.content|slice:":100" }}...</p>
+            </a>
+            <small>By {{ post.user.username }} | {{ post.created_at|date:"M d, Y" }}</small>
+        </div>
+    {% empty %}
+        <p>No posts in this category yet.</p>
+    {% endfor %}
+
+
+
+</body>
+</html>

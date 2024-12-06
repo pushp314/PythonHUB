@@ -67,6 +67,14 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
         }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover{
+            text-decoration: underline;
+        }
 
         .search-button {
             background-color: #ffd700 !important;
@@ -225,7 +233,7 @@
                         <a class="nav-link" href="{% url 'blog' %}">Blogs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'forum' %}">Forum</a>
+                        <a class="nav-link active" href="{% url 'forum:forum' %}">Forum</a>
                     </li>
                 </ul>
                 <div class="d-flex search-form gap">
@@ -250,9 +258,9 @@
                     <p>Join the discussion with fellow Python enthusiasts</p>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <button class="create-post-btn">
+                    <a href="{% url 'forum:create_post' %}" class="create-post-btn">
                         <i class="fas fa-plus-circle me-2"></i>Create New Post
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -260,65 +268,23 @@
         <!-- Forum Categories -->
         <div class="row">
             <div class="col-lg-8">
-                <!-- Beginner Questions -->
+                {% for category in categories %}
                 <div class="forum-category">
                     <div class="d-flex align-items-center">
-                        <i class="fas fa-graduation-cap category-icon"></i>
+                        <i class="fas {{ category.icon }} category-icon"></i>
                         <div class="flex-grow-1">
-                            <h3>Beginner Questions</h3>
-                            <p class="mb-0">New to Python? Ask your questions here!</p>
+                            <a href="{% url 'forum:category_posts' category.id %}">
+                                <h3>{{ category.name }}</h3>
+                            </a>
+                            <p class="mb-0">{{ category.description }}</p>
                             <div class="category-stats">
-                                <i class="fas fa-comments me-2"></i>245 topics
+                                <i class="fas fa-comments me-2"></i>{{ category.post_set.count }} topics
                                 <i class="fas fa-users ms-3 me-2"></i>1.2k members
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Advanced Python -->
-                <div class="forum-category">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-code category-icon"></i>
-                        <div class="flex-grow-1">
-                            <h3>Advanced Python</h3>
-                            <p class="mb-0">Discuss advanced concepts, optimization, and best practices</p>
-                            <div class="category-stats">
-                                <i class="fas fa-comments me-2"></i>178 topics
-                                <i class="fas fa-users ms-3 me-2"></i>856 members
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Showcase -->
-                <div class="forum-category">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-project-diagram category-icon"></i>
-                        <div class="flex-grow-1">
-                            <h3>Project Showcase</h3>
-                            <p class="mb-0">Share and discuss your Python projects</p>
-                            <div class="category-stats">
-                                <i class="fas fa-comments me-2"></i>156 topics
-                                <i class="fas fa-users ms-3 me-2"></i>945 members
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Career Discussion -->
-                <div class="forum-category">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-briefcase category-icon"></i>
-                        <div class="flex-grow-1">
-                            <h3>Career Discussion</h3>
-                            <p class="mb-0">Career advice, job opportunities, and industry insights</p>
-                            <div class="category-stats">
-                                <i class="fas fa-comments me-2"></i>134 topics
-                                <i class="fas fa-users ms-3 me-2"></i>723 members
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
             <!-- Recent Posts Sidebar -->
@@ -326,45 +292,21 @@
                 <div class="recent-posts">
                     <h3 class="mb-4">Recent Discussions</h3>
                     
-                    <!-- Recent Post Items -->
+                    <!-- Loop through recent posts -->
+                    {% for recent_post in recent_posts %}
                     <div class="post-item">
                         <div class="d-flex">
-                            <div class="avatar me-3">JD</div>
+                            <div class="avatar me-3">{{ recent_post.user|slice:":2" }}</div>
                             <div>
-                                <h5 class="mb-1">Help with List Comprehension</h5>
+                                <h5 class="mb-1">{{ recent_post.post.title }}</h5>
                                 <div class="post-meta">
-                                    <span class="me-3"><i class="far fa-user me-1"></i>John Doe</span>
-                                    <span><i class="far fa-clock me-1"></i>2 hours ago</span>
+                                    <span class="me-3"><i class="far fa-user me-1"></i>{{ recent_post.user }}</span>
+                                    <span><i class="far fa-clock me-1"></i>{{ recent_post.timestamp|date:"M d, Y h:i A" }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="post-item">
-                        <div class="d-flex">
-                            <div class="avatar me-3">AS</div>
-                            <div>
-                                <h5 class="mb-1">Django REST Framework Tips</h5>
-                                <div class="post-meta">
-                                    <span class="me-3"><i class="far fa-user me-1"></i>Alice Smith</span>
-                                    <span><i class="far fa-clock me-1"></i>4 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="post-item">
-                        <div class="d-flex">
-                            <div class="avatar me-3">RJ</div>
-                            <div>
-                                <h5 class="mb-1">Async/Await Best Practices</h5>
-                                <div class="post-meta">
-                                    <span class="me-3"><i class="far fa-user me-1"></i>Robert Johnson</span>
-                                    <span><i class="far fa-clock me-1"></i>6 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

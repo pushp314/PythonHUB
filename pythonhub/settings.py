@@ -128,3 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+
+GEMINI_API_KEY = "AIzaSyDwVZrCnOprpMdgshBkEcaptSpKwpvjdYI"
+GEMINI_API_URL = "https://api.gemini.com/v1/optimize_code"   

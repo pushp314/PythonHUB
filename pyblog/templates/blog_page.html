@@ -300,7 +300,7 @@
                         <a class="nav-link active" href="{% url 'blog' %}">Blogs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'forum' %}">Forum</a>
+                        <a class="nav-link" href="{% url 'forum:forum' %}">Forum</a>
                     </li>
                 </ul>
                 <div class="d-flex search-form gap">
@@ -339,32 +339,6 @@
                         <a href="{% url 'blogDetail' %}" class="read-more">Read More</a>
                     </div>
                 </article>
-
-                <article class="blog-post">
-                    <img src="/api/placeholder/800/400" alt="Web Development with Django" class="blog-image">
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 10, 2024</span>
-                            <span class="ms-3"><i class="far fa-user"></i> Jane Smith</span>
-                        </div>
-                        <h2 class="blog-title">Building Modern Web Applications with Django</h2>
-                        <p class="blog-excerpt">Discover how to create robust web applications using Django framework. From setting up your development environment to deploying your first application...</p>
-                        <a href="#" class="read-more">Read More</a>
-                    </div>
-                </article>
-
-                <article class="blog-post">
-                    <img src="/api/placeholder/800/400" alt="Python Tips" class="blog-image">
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 9, 2024</span>
-                            <span class="ms-3"><i class="far fa-user"></i> Mike Johnson</span>
-                        </div>
-                        <h2 class="blog-title">10 Python Tips to Write Better Code</h2>
-                        <p class="blog-excerpt">Improve your Python coding skills with these essential tips and best practices. Learn about code organization, optimization, and common pitfalls to avoid...</p>
-                        <a href="#" class="read-more">Read More</a>
-                    </div>
-                </article>
             </main>
 
             <!-- Sidebar -->
@@ -383,10 +357,6 @@
                     <h3 class="widget-title">Categories</h3>
                     <ul class="category-list">
                         <li><a href="#">Python Basics (15)</a></li>
-                        <li><a href="#">Data Science (23)</a></li>
-                        <li><a href="#">Web Development (18)</a></li>
-                        <li><a href="#">Machine Learning (12)</a></li>
-                        <li><a href="#">Tips & Tricks (9)</a></li>
                     </ul>
                 </div>
 
@@ -395,13 +365,6 @@
                     <h3 class="widget-title">Popular Tags</h3>
                     <div class="tag-list">
                         <a href="#" class="tag">Python</a>
-                        <a href="#" class="tag">Django</a>
-                        <a href="#" class="tag">Data Science</a>
-                        <a href="#" class="tag">ML</a>
-                        <a href="#" class="tag">Web Dev</a>
-                        <a href="#" class="tag">Tutorial</a>
-                        <a href="#" class="tag">API</a>
-                        <a href="#" class="tag">Tips</a>
                     </div>
                 </div>
             </aside>

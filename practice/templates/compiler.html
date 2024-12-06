@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Python Compiler & Optimizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .button-container button {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            transform: scale(1.1);
+            background-color: #1D4ED8;
+        }
+
+        .error {
+            color: #E11D48;
+        }
+
+        p {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans antialiased">
+
+    <div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-xl mt-10 fade-in">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Python Compiler & Optimizer</h1>
+
+        <div id="editor" class="h-96 border border-gray-300 rounded-md mb-6"></div>
+
+        <div class="flex justify-center gap-6 mb-6">
+            <button id="run"
+                class="bg-blue-600 text-white py-2 px-6 rounded-md text-lg transition duration-300 transform hover:scale-105 focus:outline-none hover:bg-blue-500">
+                Run Code
+            </button>
+            <button id="optimize"
+                class="bg-green-600 text-white py-2 px-6 rounded-md text-lg transition duration-300 transform hover:scale-105 focus:outline-none hover:bg-green-500">
+                Optimize Code
+            </button>
+        </div>
+
+        <div id="output" class="output bg-gray-50 p-4 rounded-md shadow-md mb-4 text-gray-800"></div>
+
+        <div id="optimization" class="optimization bg-gray-50 p-4 rounded-md shadow-md mb-4 text-gray-800"></div>
+
+        <div id="optimized_code" class="optimized-code bg-gray-50 p-4 rounded-md shadow-md text-gray-800"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const editor = ace.edit("editor");
+        editor.session.setMode("ace/mode/python");
+
+        // Get CSRF Token from meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+        // Run Code
+        $("#run").click(function () {
+            const code = editor.getValue();
+            $.ajax({
+                url: "/run_code/",
+                type: "POST",
+                data: { code },
+                headers: { "X-CSRFToken": csrfToken },  // Include CSRF token
+                success: function (response) {
+                    if (response.output) {
+                        $("#output").text(response.output);
+                    } else {
+                        $("#output").text(response.error);
+                    }
+                },
+                error: function () {
+                    $("#output").text("An error occurred while running the code.");
+                }
+            });
+        });
+
+        // Optimize Code
+        $("#optimize").click(function () {
+            const code = editor.getValue();
+            $.ajax({
+                url: "/optimize_code/",
+                type: "POST",
+                data: { code },
+                headers: { "X-CSRFToken": csrfToken },  // Include CSRF token
+                success: function (response) {
+                    if (response.optimization && response.optimized_code) {
+                        $("#optimization").html("<h3 class='font-semibold text-lg text-blue-600'>Optimization Suggestions:</h3><p>" + response.optimization + "</p>");
+                        $("#optimized_code").html("<h3 class='font-semibold text-lg text-green-600'>Optimized Code:</h3><p>" + response.optimized_code + "</p>");
+                    } else {
+                        $("#optimization").html("<span class='error'>" + response.error + "</span>");
+                        $("#optimized_code").html("<span class='error'>" + response.error + "</span>");
+                    }
+                },
+                error: function () {
+                    $("#optimization").html("<span class='error'>Error while optimizing the code.</span>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
